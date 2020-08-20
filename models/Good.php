@@ -16,4 +16,8 @@ class Good extends ActiveRecord
     public function getCategory(){
         return $this->hasOne(Category::className(), ["id" => "category_id"]);
     }
+
+    public static function getGoodByLink(string $link){
+        return self::find()->where(["link_name" => $link])->one();
+    }
 }
