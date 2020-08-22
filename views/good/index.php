@@ -13,7 +13,7 @@
                 <div class="product-descr"><?= $good->descr ?></div>
                 <div class="product-price">Цена: <?= $good->price ?> рублей</div>
                 <div class="product-buttons">
-                    <button type="button" class="product-button__add btn btn-success">Заказать</button>
+                    <a data-name="<?= $good->link_name ?>" type="button" class="product-button__add btn btn-success">Заказать</a>
                 </div>
             </div>
         </div>

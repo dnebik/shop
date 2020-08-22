@@ -20,4 +20,8 @@ class Good extends ActiveRecord
     public static function getGoodByLink(string $link){
         return self::find()->where(["link_name" => $link])->one();
     }
+
+    public static function getGoodById($id){
+        return self::find()->where(["id" => $id])->one();
+    }
 }
