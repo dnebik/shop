@@ -3,6 +3,7 @@
 
 namespace app\controllers;
 use app\models\Good;
+use app\models\Order;
 use http\Encoding\Stream;
 use yii\web\Controller;
 use app\models\Cart;
@@ -10,6 +11,22 @@ use Yii;
 
 class CartController extends Controller
 {
+    public function actionOrder(){
+        $session = Yii::$app->session;
+        $session->open();
+        $order = new Order();
+
+        if ($order->load(Yii::$app->request->post())) {
+            $order->sum = Cart::getFullPrice();
+            if ($order->save()) {
+                $session->remove('cart');
+                return $this->render('success');
+            }
+        }
+
+        $this->layout = 'empty_layout';
+        return $this->render('order', ['order' => $order]);
+    }
 
     public function actionOpen() {
         $session = Yii::$app->session;
@@ -21,7 +38,8 @@ class CartController extends Controller
     public function actionClear() {
         $session = Yii::$app->session;
         $session->open();
-        $session->remove('cart');
+
+        Cart::clearCart();
 
         return $this->renderPartial("cart", ['session' => $session]);
     }
@@ -40,7 +58,7 @@ class CartController extends Controller
         return $this->renderPartial("cart", ['session' => $session]);
     }
 
-    public function actionAdd(string $name) {
+    public function actionAdd($name) {
         $good = Good::getGoodByLink($name);
 
         $session = Yii::$app->session;

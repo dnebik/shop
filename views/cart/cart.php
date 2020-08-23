@@ -1,8 +1,12 @@
 <?
+
+/* @var $session */
+
 if (isset($session['cart'])) {
     $cart = $session['cart'];
 }
-?>
+
+use app\models\Cart; ?>
 <div class="modal-header">
     <h5 class="modal-title" id="exampleModalLabel">Корзина</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -24,13 +28,9 @@ if (isset($session['cart'])) {
 
         <tbody>
         <?
-        $count = 0;
-        $finalPrice = 0;
         if (isset($cart)) {
             foreach ($cart as $id => $item) {
-                $count += $item['count'];
                 $price = $item['price'] * $item['count'];
-                $finalPrice += $price;
                 ?>
                 <tr>
                     <td style="vertical-align: middle" width="150"><img src="/img/<?= $item['img'] ?>"
@@ -46,18 +46,18 @@ if (isset($session['cart'])) {
         } ?>
         <tr style="border-top: 4px solid black">
             <td colspan="4">Всего товаров</td>
-            <td class="total-quantity"><?= $count ?></td>
+            <td class="total-quantity"><?= Cart::getFullCount(); ?></td>
         </tr>
         <tr>
             <td colspan="4">На сумму</td>
-            <td style="font-weight: 700"><?= $finalPrice ?> рублей</td>
+            <td style="font-weight: 700"><?= Cart::getFullPrice(); ?> рублей</td>
         </tr>
         </tbody>
 
     </table>
 </div>
 <div class="modal-footer">
-    <button onclick="clearCart(event)" type="button" class="btn btn-danger">Очистить корзину</button>
+    <button onclick="clearCart(event)" type="button" class="btn btn-danger" <?= (Cart::getFullPrice() == 0) ? 'disabled' : '' ?>>Очистить корзину</button>
 <!--    <button type="button" class="btn btn-secondary btn-close">Продолжить покупки</button>-->
-    <button type="button" class="btn btn-success btn-next">Оформить заказ</button>
+    <button type="button" class="btn btn-success btn-next" <?= (Cart::getFullPrice() == 0) ? 'disabled' : '' ?>>Оформить заказ</button>
 </div>

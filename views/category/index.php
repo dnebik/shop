@@ -1,5 +1,8 @@
 <?php
 
+/* @var $categorys */
+/* @var $goods */
+
 use yii\helpers\Url;
 use app\widgets\Goods;
 

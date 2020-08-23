@@ -30,4 +30,22 @@ class Cart extends ActiveRecord
         }
     }
 
+    public static function getFullPrice() {
+        $finalPrice = 0;
+        foreach ($_SESSION['cart'] as $item) {
+            $price = $item['price'] * $item['count'];
+            $finalPrice += $price;
+        }
+        return $finalPrice;
+    }
+
+    public static function getFullCount() {
+        $count = 0;
+        if ($_SESSION['cart'])
+        foreach ($_SESSION['cart'] as $item) {
+            $count += $item['count'];
+        }
+        return $count;
+    }
+
 }

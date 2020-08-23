@@ -1,3 +1,18 @@
+$('.modal-content').on('click', '.btn-next', function () {
+    $.ajax({
+        url: '/cart/order',
+        success: function (res) {
+            $('#order .modal-content').html(res);
+        },
+        error: function () {
+            alert('Not Ok');
+        }
+    });
+
+    $('#cart').modal('hide');
+    $('#order').modal('show');
+})
+
 function openCart(event){
     event.preventDefault();
 
@@ -20,6 +35,7 @@ function clearCart(event){
         url: '/cart/clear',
         success: function (res) {
             $('#cart .modal-content').html(res);
+            $('.menu_quantity').html('');
         },
         error: function () {
             alert('Not Ok');
@@ -37,6 +53,7 @@ $('.product-button__add').on('click', function (event) {
         type: 'GET',
         success: function (res) {
             $('#cart .modal-content').html(res);
+            $('.menu_quantity').html('(' + $('.total-quantity').html() + ')');
         },
         error: function () {
             alert('Not Ok');
@@ -53,6 +70,11 @@ function removeFromCart (event, id) {
         type: 'GET',
         success: function (res) {
             $('#cart .modal-content').html(res);
+            if ($('.total-quantity').html() != '0') {
+                $('.menu_quantity').html('(' + $('.total-quantity').html() + ')');
+            } else {
+                $('.menu_quantity').html('');
+            }
         },
         error: function () {
             alert('Not Ok');
