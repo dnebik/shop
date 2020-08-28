@@ -39,6 +39,7 @@ class AdminController extends Controller
             'query' => Order::find(),
         ]);
 
+        $this->layout = "adminLayout";
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
