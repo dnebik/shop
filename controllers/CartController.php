@@ -4,6 +4,7 @@
 namespace app\controllers;
 use app\models\Good;
 use app\models\Order;
+use app\models\OrderGood;
 use http\Encoding\Stream;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -25,7 +26,7 @@ class CartController extends Controller
             $order->sum = Cart::getFullPrice();
             if ($order->save()) {
                 $id = $order->id;
-
+                $this->saveOrderInfo($session['cart'], $id);
                 Yii::$app->mailer->compose("order", ["session" => $session, "id" => $id])
                     ->setFrom(['dneb97@mail.ru' => 'Sushi'])
                     ->setTo($order->email)
@@ -46,6 +47,20 @@ class CartController extends Controller
         $session->open();
 
         return $this->renderPartial("cart", ['session' => $session]);
+    }
+
+    protected function saveOrderInfo($goods, $orderId) {
+
+        foreach ($goods as $id => $item) {
+            $orderInfo = new OrderGood();
+            $orderInfo->order_id = $orderId;
+            $orderInfo->good_id = $id;
+            $orderInfo->name = $item['name'];
+            $orderInfo->price = $item['price'];
+            $orderInfo->quantity = $item['count'];
+            $orderInfo->sum = $item['count'] * $item['price'];
+            $orderInfo->save();
+        }
     }
 
     public function actionClear() {
