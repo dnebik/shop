@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Good;
 use app\models\Order;
 use http\Encoding\Stream;
+use yii\helpers\Url;
 use yii\web\Controller;
 use app\models\Cart;
 use Yii;
@@ -14,13 +15,25 @@ class CartController extends Controller
     public function actionOrder(){
         $session = Yii::$app->session;
         $session->open();
-        $order = new Order();
 
+        if (!$session["cart"]) {
+            return Yii::$app->response->redirect(Url::to("/"));
+        }
+
+        $order = new Order();
         if ($order->load(Yii::$app->request->post())) {
             $order->sum = Cart::getFullPrice();
             if ($order->save()) {
+                $id = $order->id;
+
+                Yii::$app->mailer->compose("order", ["session" => $session, "id" => $id])
+                    ->setFrom(['dneb97@mail.ru' => 'Sushi'])
+                    ->setTo($order->email)
+                    ->setSubject("Ваш заказ")
+                    ->send();
+
                 $session->remove('cart');
-                return $this->render('success');
+                return $this->render('success', ["id" => $id]);
             }
         }
 
