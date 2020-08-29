@@ -18,7 +18,7 @@ class Order extends ActiveRecord
         return [
             [['name', 'email', 'phone', 'address'], 'required'],
             [['email'], 'email'],
-            [['name', 'email', 'phone', 'address'], 'string', 'max' => 255],
+            [['name', 'email', 'phone', 'address', 'status'], 'string', 'max' => 255],
         ];
     }
 
@@ -34,6 +34,6 @@ class Order extends ActiveRecord
 
     public function getOrderGoods()
     {
-        return $this->hasMany(OrderGood::className(), ['order_id' => 'id']);
+        return $this->hasMany(OrderGood::class, ['order_id' => 'id']);
     }
 }
