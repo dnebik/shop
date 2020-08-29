@@ -20,8 +20,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'status')->dropDownList(['Новый' => 'Новый', 'Завершен' => 'Завершен']) ?>
+
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <a href="<?= $_SERVER["HTTP_REFERER"] ?>" class="btn btn-success">Назад</a>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

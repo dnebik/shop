@@ -29,7 +29,14 @@ AppAsset::register($this);
         <div class="container">
             <div class="header">
                 <a href="/">На главную</a>
-                <a href="#">Вход в админку</a>
+                <?
+                if (Yii::$app->user->isGuest) {
+                ?>
+                    <a href="<?= Url::to("/admin/login") ?>">Вход в админку</a>
+                <? } else {?>
+                    <a href="<?= Url::to("/admin") ?>">Админка</a>
+                    <a href="<?= Url::to("/admin/logout") ?>">Выход из админки</a>
+                <? } ?>
                 <a onclick="openCart(event)" href="#">Корзина <span class="menu_quantity">
                         <?
                             $totalCount = Cart::getFullCount();
