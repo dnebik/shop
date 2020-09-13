@@ -1,3 +1,3 @@
 # shop
 
-web-site: http://dneb.site/
+web-site: http://shop.dneb.site/
